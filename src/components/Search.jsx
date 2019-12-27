@@ -10,7 +10,7 @@ export default function Search(props) {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    props.findOrganization(searchVal);
+    props.searchOrganization(searchVal);
   };
 
   return (
@@ -28,5 +28,5 @@ export default function Search(props) {
 }
 
 Search.propTypes = {
-  findOrganization: PropTypes.func.isRequired
+  searchOrganization: PropTypes.func.isRequired
 };

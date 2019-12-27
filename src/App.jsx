@@ -2,50 +2,24 @@ import React, { useState } from 'react';
 import './App.css';
 import Search from './components/Search';
 import UsersList from './components/UsersList';
+import { findOrganization, getOrganizationUsers } from './utils/GithubApiUtils';
 
 function App() {
   const [users, setUsers] = useState([]);
   const [organizationName, setOrganizationName] = useState('');
 
-  const findOrganization = async input => {
-    try {
-      const response = await fetch(
-        `https://api.github.com/search/users?q=${input}+type:org`
-      );
-      const json = await response.json();
+  const searchOrganization = async input => {
+    const orgName = await findOrganization(input);
+    const orgUsers = await getOrganizationUsers(orgName);
 
-      const { items: organizations } = json;
-      const organization = organizations[0];
-
-      setOrganizationName(organization.login);
-
-      getOrganizationUsers(organization.login);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getOrganizationUsers = async organizationName => {
-    try {
-      const response = await fetch(
-        `https://api.github.com/orgs/${organizationName}/members`
-      );
-      const json = await response.json();
-
-      const users = json.map(user => ({
-        id: user.id,
-        login: user.login
-      }));
-      setUsers(users);
-    } catch (error) {
-      console.error(error);
-    }
+    setOrganizationName(orgName);
+    setUsers(orgUsers);
   };
 
   return (
     <div className="App">
       <span>Organization: {organizationName}</span>
-      <Search findOrganization={findOrganization} />
+      <Search searchOrganization={searchOrganization} />
       <UsersList users={users} />
     </div>
   );
