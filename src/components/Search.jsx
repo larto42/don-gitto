@@ -8,23 +8,9 @@ export default function Search(props) {
     setSearchVal(e.target.value);
   };
 
-  const handleFormSubmit = async e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `https://api.github.com/search/users?q=${searchVal}+type:org`
-      );
-      const json = await response.json();
-
-      const { items: organizations } = json;
-      const organization = organizations[0];
-
-      const { setOrganizationName } = props;
-
-      setOrganizationName(organization.login);
-    } catch (error) {
-      console.error(error);
-    }
+    props.findOrganization(searchVal);
   };
 
   return (
@@ -42,6 +28,5 @@ export default function Search(props) {
 }
 
 Search.propTypes = {
-  setUserList: PropTypes.func.isRequired,
-  setOrganizationName: PropTypes.func.isRequired
+  findOrganization: PropTypes.func.isRequired
 };
