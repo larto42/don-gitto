@@ -5,9 +5,11 @@ import {
   getOrganizationUsers,
   getUserLastActivity
 } from '../utils/GithubApiUtils';
+import ErrorAlert from './ErrorAlert';
 
 export default function Search(props) {
   const [searchVal, setSearchVal] = useState('');
+  const [error, setError] = useState(false);
 
   const { setUsers, setOrganizationName } = props;
 
@@ -38,23 +40,24 @@ export default function Search(props) {
 
       setOrganizationName(orgName);
     } catch (error) {
-      //Display error msg
-      console.error(error);
-      return false;
+      setError(true);
     }
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <input
-        type="text"
-        id="search"
-        placeholder="Find GitHub organization"
-        value={searchVal}
-        onChange={handleInput}
-      />
-      <button type="submit">Find</button>
-    </form>
+    <React.Fragment>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          id="search"
+          placeholder="Find GitHub organization"
+          value={searchVal}
+          onChange={handleInput}
+        />
+        <button type="submit">Find</button>
+      </form>
+      {error && <ErrorAlert>An error occurred. Try again.</ErrorAlert>}
+    </React.Fragment>
   );
 }
 
