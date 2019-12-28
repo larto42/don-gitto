@@ -11,7 +11,7 @@ export default function Search(props) {
   const [searchVal, setSearchVal] = useState('');
   const [error, setError] = useState(false);
 
-  const { setUsers, setOrganizationName } = props;
+  const { setUsers, setOrganizationName, setPagination } = props;
 
   const handleInput = e => {
     setSearchVal(e.target.value);
@@ -25,9 +25,12 @@ export default function Search(props) {
   const searchOrganization = async input => {
     try {
       const orgName = await findOrganization(input);
-      const orgUsers = await getOrganizationUsers(orgName);
+      setOrganizationName(orgName);
+
+      const { users: orgUsers, links } = await getOrganizationUsers(orgName);
 
       setUsers(orgUsers);
+      if (links !== null) setPagination(links);
 
       orgUsers.forEach(async (user, index) => {
         const activity = await getUserLastActivity(user.login);
@@ -37,8 +40,6 @@ export default function Search(props) {
           return newState;
         });
       });
-
-      setOrganizationName(orgName);
     } catch (error) {
       console.error(error);
       setError(true);
@@ -64,5 +65,6 @@ export default function Search(props) {
 
 Search.propTypes = {
   setUsers: PropTypes.func.isRequired,
-  setOrganizationName: PropTypes.func.isRequired
+  setOrganizationName: PropTypes.func.isRequired,
+  setPagination: PropTypes.func.isRequired
 };
