@@ -42,8 +42,7 @@ export const getUserLastActivity = user => {
         `https://api.github.com/users/${user}/events`
       );
       const json = await response.json();
-
-      resolve(json[0]);
+      resolve(json[0]?.type || 'User has no public activity');
     } catch (error) {
       reject(error);
     }

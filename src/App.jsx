@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import './App.css';
 import Search from './components/Search';
 import UsersList from './components/UsersList';
-import { findOrganization, getOrganizationUsers } from './utils/GithubApiUtils';
+import {
+  findOrganization,
+  getOrganizationUsers,
+  getUserLastActivity
+} from './utils/GithubApiUtils';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -12,8 +16,18 @@ function App() {
     const orgName = await findOrganization(input);
     const orgUsers = await getOrganizationUsers(orgName);
 
-    setOrganizationName(orgName);
     setUsers(orgUsers);
+
+    orgUsers.forEach(async (user, index) => {
+      const activity = await getUserLastActivity(user.login);
+      setUsers(prevState => {
+        const newState = [...prevState];
+        newState[index].activity = activity;
+        return newState;
+      });
+    });
+
+    setOrganizationName(orgName);
   };
 
   return (
