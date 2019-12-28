@@ -13,21 +13,27 @@ function App() {
   const [organizationName, setOrganizationName] = useState('');
 
   const searchOrganization = async input => {
-    const orgName = await findOrganization(input);
-    const orgUsers = await getOrganizationUsers(orgName);
+    try {
+      const orgName = await findOrganization(input);
+      const orgUsers = await getOrganizationUsers(orgName);
 
-    setUsers(orgUsers);
+      setUsers(orgUsers);
 
-    orgUsers.forEach(async (user, index) => {
-      const activity = await getUserLastActivity(user.login);
-      setUsers(prevState => {
-        const newState = [...prevState];
-        newState[index] = { ...newState[index], activity };
-        return newState;
+      orgUsers.forEach(async (user, index) => {
+        const activity = await getUserLastActivity(user.login);
+        setUsers(prevState => {
+          const newState = [...prevState];
+          newState[index] = { ...newState[index], activity };
+          return newState;
+        });
       });
-    });
 
-    setOrganizationName(orgName);
+      setOrganizationName(orgName);
+    } catch (error) {
+      //Display error msg
+      console.error(error);
+      return false;
+    }
   };
 
   return (

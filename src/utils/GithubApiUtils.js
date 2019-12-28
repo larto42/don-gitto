@@ -1,36 +1,28 @@
 export const findOrganization = async input => {
-  try {
-    const response = await fetch(
-      `https://api.github.com/search/users?q=${input}+type:org`
-    );
-    const json = await response.json();
+  const response = await fetch(
+    `https://api.github.com/search/users?q=${input}+type:org`
+  );
+  const json = await response.json();
 
-    if (json.totalCount === 0) return '';
+  if (json.totalCount === 0) return '';
 
-    const { items: organizations } = json;
-    const bestMatch = organizations[0].login;
-    return bestMatch;
-  } catch (error) {
-    console.error('errrr', error);
-  }
+  const { items: organizations } = json;
+  const bestMatch = organizations[0].login;
+  return bestMatch;
 };
 
 export const getOrganizationUsers = async organizationName => {
-  try {
-    const response = await fetch(
-      `https://api.github.com/orgs/${organizationName}/members`
-    );
-    const json = await response.json();
+  const response = await fetch(
+    `https://api.github.com/orgs/${organizationName}/members`
+  );
+  const json = await response.json();
 
-    const users = json.map(user => ({
-      id: user.id,
-      login: user.login
-    }));
+  const users = json.map(user => ({
+    id: user.id,
+    login: user.login
+  }));
 
-    return users;
-  } catch (error) {
-    console.error(error);
-  }
+  return users;
 };
 
 export const getUserLastActivity = async user => {
