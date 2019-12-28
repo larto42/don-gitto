@@ -1,23 +1,28 @@
+import Octokit from '@octokit/rest';
+
 export const findOrganization = async input => {
-  const response = await fetch(
-    `https://api.github.com/search/users?q=${input}+type:org`
-  );
-  const json = await response.json();
+  const octokit = new Octokit();
 
-  if (json.totalCount === 0) return '';
+  const response = await octokit.search.users({
+    q: `${input}+type:org`
+  });
+  const { total_count: totalCount, items: organizations } = response.data;
 
-  const { items: organizations } = json;
+  if (totalCount === 0) return '';
+
   const bestMatch = organizations[0].login;
   return bestMatch;
 };
 
 export const getOrganizationUsers = async organizationName => {
-  const response = await fetch(
-    `https://api.github.com/orgs/${organizationName}/members`
-  );
-  const json = await response.json();
+  const octokit = new Octokit();
+  const response = await octokit.orgs.listMembers({
+    org: organizationName
+  });
 
-  const users = json.map(user => ({
+  const { data: userArray } = response;
+
+  const users = userArray.map(user => ({
     id: user.id,
     login: user.login
   }));
@@ -26,7 +31,11 @@ export const getOrganizationUsers = async organizationName => {
 };
 
 export const getUserLastActivity = async user => {
-  const response = await fetch(`https://api.github.com/users/${user}/events`);
-  const json = await response.json();
-  return json[0]?.type || 'User has no public activity';
+  const octokit = new Octokit();
+  const response = await octokit.activity.listEventsForUser({
+    username: user
+  });
+
+  const { data: activityArray } = response;
+  return activityArray[0]?.type || 'User has no public activity';
 };

@@ -40,6 +40,7 @@ export default function Search(props) {
 
       setOrganizationName(orgName);
     } catch (error) {
+      console.error(error);
       setError(true);
     }
   };
