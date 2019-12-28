@@ -22,7 +22,7 @@ function App() {
       const activity = await getUserLastActivity(user.login);
       setUsers(prevState => {
         const newState = [...prevState];
-        newState[index].activity = activity;
+        newState[index] = { ...newState[index], activity };
         return newState;
       });
     });
