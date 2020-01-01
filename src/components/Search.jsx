@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  findOrganization,
-  getOrganizationUsers,
-  getUserLastActivity
-} from '../utils/GithubApiUtils';
 import ErrorAlert from './ErrorAlert';
 
 export default function Search(props) {
   const [searchVal, setSearchVal] = useState('');
-  const [error, setError] = useState(false);
 
-  const { setUsers, setOrganizationName, setPagination } = props;
+  const { searchOrganization, error } = props;
 
   const handleInput = e => {
     setSearchVal(e.target.value);
@@ -20,30 +14,6 @@ export default function Search(props) {
   const handleFormSubmit = e => {
     e.preventDefault();
     searchOrganization(searchVal);
-  };
-
-  const searchOrganization = async input => {
-    try {
-      const orgName = await findOrganization(input);
-      setOrganizationName(orgName);
-
-      const { users: orgUsers, links } = await getOrganizationUsers(orgName);
-
-      setUsers(orgUsers);
-      if (links !== null) setPagination(links);
-
-      orgUsers.forEach(async (user, index) => {
-        const activity = await getUserLastActivity(user.login);
-        setUsers(prevState => {
-          const newState = [...prevState];
-          newState[index] = { ...newState[index], activity };
-          return newState;
-        });
-      });
-    } catch (error) {
-      console.error(error);
-      setError(true);
-    }
   };
 
   return (
@@ -64,7 +34,6 @@ export default function Search(props) {
 }
 
 Search.propTypes = {
-  setUsers: PropTypes.func.isRequired,
-  setOrganizationName: PropTypes.func.isRequired,
-  setPagination: PropTypes.func.isRequired
+  searchOrganization: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired
 };

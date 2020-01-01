@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function UsersPagination({ pagination }) {
+export default function UsersPagination({
+  pagination,
+  searchOrganizationUsers,
+  orgName
+}) {
   const { prev, next } = pagination;
   const handlePrevClick = async () => {
+    searchOrganizationUsers(orgName, prev);
     // load previous page of users
   };
 
   const handleNextClick = async () => {
+    searchOrganizationUsers(orgName, next);
     // load next page of users
   };
 
@@ -20,5 +26,7 @@ export default function UsersPagination({ pagination }) {
 }
 
 UsersPagination.propTypes = {
-  pagination: PropTypes.object.isRequired
+  pagination: PropTypes.object.isRequired,
+  searchOrganizationUsers: PropTypes.func.isRequired,
+  orgName: PropTypes.string.isRequired
 };

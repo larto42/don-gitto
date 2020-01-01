@@ -2,7 +2,6 @@ import Octokit from '@octokit/rest';
 
 export const findOrganization = async input => {
   const octokit = new Octokit();
-
   const response = await octokit.search.users({
     q: `${input}+type:org`
   });
@@ -14,7 +13,7 @@ export const findOrganization = async input => {
   return bestMatch;
 };
 
-export const getOrganizationUsers = async (organizationName, page = 1) => {
+export const getOrganizationUsers = async (organizationName, page) => {
   const octokit = new Octokit();
   const response = await octokit.orgs.listMembers({
     org: organizationName,
@@ -47,7 +46,7 @@ export const getUserLastActivity = async user => {
 const parseLinks = link => {
   const linkArr = link.split(',');
   const links = linkArr.map(item => {
-    const regex = /^<(.*)\?page=(\d+)>; rel="(.*)"\s*$/gm;
+    const regex = /^(.*)\?page=(\d+)>; rel="(.*)"\s*$/gm;
     const results = regex.exec(item);
 
     if (results === null) return { pageNumber: '', label: '' };
@@ -68,6 +67,5 @@ const parseLinks = link => {
     acc[cur.label] = cur.pageNumber;
     return acc;
   }, {});
-
   return finalLinks;
 };
