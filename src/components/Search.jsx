@@ -25,6 +25,7 @@ export default function Search(props) {
           placeholder="Find GitHub organization"
           value={searchVal}
           onChange={handleInput}
+          required
         />
         <button type="submit">Find</button>
       </form>
