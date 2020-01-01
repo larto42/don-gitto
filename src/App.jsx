@@ -6,13 +6,15 @@ import UsersPagination from './components/UsersPagination';
 import {
   findOrganization,
   getOrganizationUsers,
-  getUserLastActivity
+  getUserLastActivity,
+  checkLimits
 } from './utils/GithubApiUtils';
 
 function App() {
   const [users, setUsers] = useState([]);
   const [organizationName, setOrganizationName] = useState('');
   const [error, setError] = useState(false);
+  const [limitsRespawnDate, setLimitsRespawnDate] = useState(null);
   const [pagination, setPagination] = useState({
     prev: null,
     next: null
@@ -26,6 +28,9 @@ function App() {
     } catch (error) {
       console.error(error);
       setError(true);
+      const limits = await checkLimits();
+      const date = limits === null ? null : limits.toLocaleString();
+      setLimitsRespawnDate(date);
     }
   };
 
@@ -55,7 +60,11 @@ function App() {
   return (
     <div className="App">
       <span>Organization: {organizationName}</span>
-      <Search searchOrganization={searchOrganization} error={error} />
+      <Search
+        searchOrganization={searchOrganization}
+        error={error}
+        limitsRespawnDate={limitsRespawnDate}
+      />
       <UsersList users={users} />
       <UsersPagination
         pagination={pagination}

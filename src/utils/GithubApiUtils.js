@@ -43,6 +43,21 @@ export const getUserLastActivity = async user => {
   return activityArray[0]?.type || 'User has no public activity';
 };
 
+export const checkLimits = async () => {
+  const octokit = new Octokit();
+  const limits = await octokit.rateLimit.get();
+  const { core: coreLimits, search: searchLimits } = limits.data.resources;
+
+  if (coreLimits.remaining === 0) {
+    return new Date(coreLimits.reset * 1000);
+  }
+  if (searchLimits.remaining === 0) {
+    return new Date(searchLimits.reset * 1000);
+  }
+
+  return null;
+};
+
 const parseLinks = link => {
   const linkArr = link.split(',');
   const links = linkArr.map(item => {
