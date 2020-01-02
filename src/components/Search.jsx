@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ErrorAlert from './ErrorAlert';
+import SearchIcon from './SearchIcon';
 
 export default function Search(props) {
   const [searchVal, setSearchVal] = useState('');
@@ -18,16 +19,19 @@ export default function Search(props) {
 
   return (
     <React.Fragment>
-      <form onSubmit={handleFormSubmit}>
+      <form className="search-form" onSubmit={handleFormSubmit}>
         <input
           type="text"
           id="search"
+          className="search-input"
           placeholder="Find GitHub organization"
           value={searchVal}
           onChange={handleInput}
           required
         />
-        <button type="submit">Find</button>
+        <button className="search-button" type="submit">
+          <SearchIcon />
+        </button>
       </form>
       {error && (
         <ErrorAlert>

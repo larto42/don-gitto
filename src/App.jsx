@@ -68,12 +68,13 @@ function App() {
 
   return (
     <div className="App">
-      <span>Organization: {organizationName}</span>
+      <h1 className="title">Don Gitto</h1>
       <Search
         searchOrganization={searchOrganization}
         error={error}
         limitsRespawnDate={limitsRespawnDate}
       />
+      <span>Organization: {organizationName}</span>
       <UsersList users={users} />
       <UsersPagination
         pagination={pagination}
