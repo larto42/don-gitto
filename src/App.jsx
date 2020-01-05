@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import Search from './components/Search';
 import UsersList from './components/UsersList';
 import UsersPagination from './components/UsersPagination';
 import {
@@ -9,6 +8,7 @@ import {
   getUserLastActivity,
   checkLimits
 } from './utils/GithubApiUtils';
+import Header from './components/Header';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -68,13 +68,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">Don Gitto</h1>
-      <Search
+      <Header
         searchOrganization={searchOrganization}
         error={error}
         limitsRespawnDate={limitsRespawnDate}
       />
-      <span>Organization: {organizationName}</span>
+      {organizationName && (
+        <h2 className="organization">Organization: {organizationName}</h2>
+      )}
       <UsersList users={users} />
       <UsersPagination
         pagination={pagination}
