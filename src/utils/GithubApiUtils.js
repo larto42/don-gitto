@@ -40,7 +40,16 @@ export const getUserLastActivity = async user => {
   });
 
   const { data: activityArray } = response;
-  return activityArray[0]?.type || 'User has no public activity';
+  const [activity] = activityArray;
+  if (!activity) return null;
+
+  const date = new Date(activity.created_at).toLocaleString();
+
+  return {
+    type: activity.type,
+    repo: activity.repo.name,
+    date: date
+  };
 };
 
 export const checkLimits = async () => {
