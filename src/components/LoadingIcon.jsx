@@ -11,13 +11,13 @@ export default function LoadingIcon() {
       <rect x="0" y="0" width="100%" height="100%" fill="#FFFFFF" />
       <g>
         <linearGradient id="linear-gradient">
-          <stop offset="0%" stop-color="#ffffff" fill-opacity="0" />
-          <stop offset="100%" stop-color="#242488" fill-opacity="1" />
+          <stop offset="0%" stopColor="#ffffff" fillOpacity="0" />
+          <stop offset="100%" stopColor="#242488" fillOpacity="1" />
         </linearGradient>
         <path
           d="M63.85 0A63.85 63.85 0 1 1 0 63.85 63.85 63.85 0 0 1 63.85 0zm.65 19.5a44 44 0 1 1-44 44 44 44 0 0 1 44-44z"
           fill="url(#linear-gradient)"
-          fill-rule="evenodd"
+          fillRule="evenodd"
         />
         <animateTransform
           attributeName="transform"

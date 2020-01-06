@@ -22,21 +22,25 @@ function App() {
 
   const searchOrganization = async input => {
     try {
+      setError(false);
       const orgName = await findOrganization(input);
       setOrganizationName(orgName);
+
       await searchOrganizationUsers(orgName);
-      setError(false);
     } catch (error) {
       handleError(error);
     }
   };
 
   const handleError = async error => {
-    console.error('error handling', error);
-    setError(true);
-    const limits = await checkLimits();
-    const date = limits === null ? null : limits.toLocaleString();
-    setLimitsRespawnDate(date);
+    try {
+      setError(true);
+      const limits = await checkLimits();
+      const date = limits === null ? null : limits.toLocaleString();
+      setLimitsRespawnDate(date);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const searchOrganizationUsers = async (orgName, page = 1) => {
@@ -47,11 +51,13 @@ function App() {
       );
 
       setUsers(orgUsers);
+
       if (links !== null) setPagination(links);
 
       orgUsers.forEach(async (user, index) => {
         try {
           const activity = await getUserLastActivity(user.login);
+
           setUsers(prevState => {
             const newState = [...prevState];
             newState[index] = { ...newState[index], activity };
@@ -62,7 +68,7 @@ function App() {
         }
       });
     } catch (error) {
-      throw error;
+      handleError(error);
     }
   };
 
