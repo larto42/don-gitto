@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/don-gitto/static/css/main.23fe7fc9.chunk.css",
+    "main.js": "/don-gitto/static/js/main.61ba8cd7.chunk.js",
+    "main.js.map": "/don-gitto/static/js/main.61ba8cd7.chunk.js.map",
+    "runtime-main.js": "/don-gitto/static/js/runtime-main.ab5ba222.js",
+    "runtime-main.js.map": "/don-gitto/static/js/runtime-main.ab5ba222.js.map",
+    "static/js/2.0a275c1f.chunk.js": "/don-gitto/static/js/2.0a275c1f.chunk.js",
+    "static/js/2.0a275c1f.chunk.js.map": "/don-gitto/static/js/2.0a275c1f.chunk.js.map",
+    "index.html": "/don-gitto/index.html",
+    "precache-manifest.83e43062244e3fdb71bbcaf35a7ad8c6.js": "/don-gitto/precache-manifest.83e43062244e3fdb71bbcaf35a7ad8c6.js",
+    "service-worker.js": "/don-gitto/service-worker.js",
+    "static/css/main.23fe7fc9.chunk.css.map": "/don-gitto/static/css/main.23fe7fc9.chunk.css.map",
+    "static/js/2.0a275c1f.chunk.js.LICENSE": "/don-gitto/static/js/2.0a275c1f.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ab5ba222.js",
+    "static/js/2.0a275c1f.chunk.js",
+    "static/css/main.23fe7fc9.chunk.css",
+    "static/js/main.61ba8cd7.chunk.js"
+  ]
+}
