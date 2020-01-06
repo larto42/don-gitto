@@ -22,7 +22,7 @@ function App() {
 
   const searchOrganization = async input => {
     try {
-      setError(false);
+      clearState();
       const orgName = await findOrganization(input);
       setOrganizationName(orgName);
 
@@ -51,7 +51,6 @@ function App() {
       );
 
       setUsers(orgUsers);
-
       if (links !== null) setPagination(links);
 
       orgUsers.forEach(async (user, index) => {
@@ -72,6 +71,12 @@ function App() {
     }
   };
 
+  const clearState = () => {
+    setError(false);
+    setPagination({ prev: null, next: null });
+    setUsers([]);
+  };
+
   return (
     <div className="App">
       <Header
@@ -82,7 +87,7 @@ function App() {
       {organizationName && (
         <h2 className="organization">Organization: {organizationName}</h2>
       )}
-      <UsersList users={users} />
+      <UsersList users={users} organization={organizationName} />
       <UsersPagination
         pagination={pagination}
         orgName={organizationName}

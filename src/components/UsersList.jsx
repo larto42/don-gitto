@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingIcon from './LoadingIcon';
 
-export default function UsersList({ users }) {
+export default function UsersList({ users, organization }) {
   return (
     <React.Fragment>
       {!!users.length && <h3>User list</h3>}
+      {!!organization && !users.length && (
+        <h3>The organization has no users</h3>
+      )}
       <ul className="user-list">
         {users.map(({ id, login, activity }) => (
           <li className="user" key={id}>
@@ -25,5 +28,6 @@ export default function UsersList({ users }) {
 }
 
 UsersList.propTypes = {
-  users: PropTypes.array.isRequired
+  users: PropTypes.array.isRequired,
+  organization: PropTypes.string.isRequired
 };
