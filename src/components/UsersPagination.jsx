@@ -19,8 +19,16 @@ export default function UsersPagination({
 
   return (
     <div>
-      {prev && <button onClick={handlePrevClick}>Previous page</button>}
-      {next && <button onClick={handleNextClick}>Next page</button>}
+      {prev && (
+        <button className="pagination-btn" onClick={handlePrevClick}>
+          Previous page
+        </button>
+      )}
+      {next && (
+        <button className="pagination-btn" onClick={handleNextClick}>
+          Next page
+        </button>
+      )}
     </div>
   );
 }

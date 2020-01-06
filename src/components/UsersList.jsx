@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LoadingIcon from './LoadingIcon';
 
 export default function UsersList({ users }) {
   return (
@@ -13,7 +14,8 @@ export default function UsersList({ users }) {
               {activity && <span>activity: {activity.type}</span>}
               {activity && <span>repository: {activity.repo}</span>}
               {activity && <span>date: {activity.date}</span>}
-              {!activity && <span>User has no public activity</span>}
+              {activity === null && <span>User has no public activity</span>}
+              {!activity && activity !== null && <LoadingIcon />}
             </div>
           </li>
         ))}

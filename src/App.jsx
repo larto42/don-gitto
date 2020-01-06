@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
 import UsersList from './components/UsersList';
 import UsersPagination from './components/UsersPagination';
 import {
@@ -8,7 +9,6 @@ import {
   getUserLastActivity,
   checkLimits
 } from './utils/GithubApiUtils';
-import Header from './components/Header';
 
 function App() {
   const [users, setUsers] = useState([]);
