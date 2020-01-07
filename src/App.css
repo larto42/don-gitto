@@ -77,6 +77,11 @@
   background: rgb(54, 54, 136);
 }
 
+.pagination-btn:disabled {
+  background: rgb(167, 167, 196);
+  cursor: not-allowed;
+}
+
 .loading-icon {
   width: 16px;
   height: 16px;
@@ -110,5 +115,7 @@
   .error-msg {
     grid-column: 1/3;
     justify-self: center;
+    margin: auto;
+    max-width: 50vw;
   }
 }

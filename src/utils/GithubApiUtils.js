@@ -7,7 +7,7 @@ export const findOrganization = async input => {
   });
   const { total_count: totalCount, items: organizations } = response.data;
 
-  if (totalCount === 0) return '';
+  if (totalCount === 0) return null;
 
   const bestMatch = organizations[0].login;
   return bestMatch;

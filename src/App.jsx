@@ -9,6 +9,7 @@ import {
   getUserLastActivity,
   checkLimits
 } from './utils/GithubApiUtils';
+import ErrorAlert from './components/ErrorAlert';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,10 @@ function App() {
     try {
       clearState();
       const orgName = await findOrganization(input);
+
       setOrganizationName(orgName);
+
+      if (orgName === null) return;
 
       await searchOrganizationUsers(orgName);
     } catch (error) {
@@ -87,11 +91,15 @@ function App() {
       {organizationName && (
         <h2 className="organization">Organization: {organizationName}</h2>
       )}
+      {organizationName === null && (
+        <ErrorAlert>Couldn't find organization with this name.</ErrorAlert>
+      )}
       <UsersList users={users} organization={organizationName} />
       <UsersPagination
         pagination={pagination}
         orgName={organizationName}
         searchOrganizationUsers={searchOrganizationUsers}
+        error={error}
       />
     </div>
   );
