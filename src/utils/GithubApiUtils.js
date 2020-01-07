@@ -7,7 +7,7 @@ export const findOrganization = async input => {
   });
   const { total_count: totalCount, items: organizations } = response.data;
 
-  if (totalCount === 0) return '';
+  if (totalCount === 0) return null;
 
   const bestMatch = organizations[0].login;
   return bestMatch;
@@ -40,7 +40,16 @@ export const getUserLastActivity = async user => {
   });
 
   const { data: activityArray } = response;
-  return activityArray[0]?.type || 'User has no public activity';
+  const [activity] = activityArray;
+  if (!activity) return null;
+
+  const date = new Date(activity.created_at).toLocaleString();
+
+  return {
+    type: activity.type,
+    repo: activity.repo.name,
+    date: date
+  };
 };
 
 export const checkLimits = async () => {

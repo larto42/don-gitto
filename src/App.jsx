@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import Search from './components/Search';
+import Header from './components/Header';
 import UsersList from './components/UsersList';
 import UsersPagination from './components/UsersPagination';
 import {
@@ -9,6 +9,7 @@ import {
   getUserLastActivity,
   checkLimits
 } from './utils/GithubApiUtils';
+import ErrorAlert from './components/ErrorAlert';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -22,21 +23,28 @@ function App() {
 
   const searchOrganization = async input => {
     try {
+      clearState();
       const orgName = await findOrganization(input);
+
       setOrganizationName(orgName);
+
+      if (orgName === null) return;
+
       await searchOrganizationUsers(orgName);
-      setError(false);
     } catch (error) {
       handleError(error);
     }
   };
 
   const handleError = async error => {
-    console.error('error handling', error);
-    setError(true);
-    const limits = await checkLimits();
-    const date = limits === null ? null : limits.toLocaleString();
-    setLimitsRespawnDate(date);
+    try {
+      setError(true);
+      const limits = await checkLimits();
+      const date = limits === null ? null : limits.toLocaleString();
+      setLimitsRespawnDate(date);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const searchOrganizationUsers = async (orgName, page = 1) => {
@@ -52,6 +60,7 @@ function App() {
       orgUsers.forEach(async (user, index) => {
         try {
           const activity = await getUserLastActivity(user.login);
+
           setUsers(prevState => {
             const newState = [...prevState];
             newState[index] = { ...newState[index], activity };
@@ -62,24 +71,35 @@ function App() {
         }
       });
     } catch (error) {
-      throw error;
+      handleError(error);
     }
+  };
+
+  const clearState = () => {
+    setError(false);
+    setPagination({ prev: null, next: null });
+    setUsers([]);
   };
 
   return (
     <div className="App">
-      <h1 className="title">Don Gitto</h1>
-      <Search
+      <Header
         searchOrganization={searchOrganization}
         error={error}
         limitsRespawnDate={limitsRespawnDate}
       />
-      <span>Organization: {organizationName}</span>
-      <UsersList users={users} />
+      {organizationName && (
+        <h2 className="organization">Organization: {organizationName}</h2>
+      )}
+      {organizationName === null && (
+        <ErrorAlert>Couldn't find organization with this name.</ErrorAlert>
+      )}
+      <UsersList users={users} organization={organizationName} />
       <UsersPagination
         pagination={pagination}
         orgName={organizationName}
         searchOrganizationUsers={searchOrganizationUsers}
+        error={error}
       />
     </div>
   );

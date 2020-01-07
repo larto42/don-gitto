@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 export default function UsersPagination({
   pagination,
   searchOrganizationUsers,
-  orgName
+  orgName,
+  error
 }) {
   const { prev, next } = pagination;
   const handlePrevClick = async () => {
@@ -19,8 +20,24 @@ export default function UsersPagination({
 
   return (
     <div>
-      {prev && <button onClick={handlePrevClick}>Previous page</button>}
-      {next && <button onClick={handleNextClick}>Next page</button>}
+      {prev && (
+        <button
+          className="pagination-btn"
+          onClick={handlePrevClick}
+          disabled={error}
+        >
+          Previous page
+        </button>
+      )}
+      {next && (
+        <button
+          className="pagination-btn"
+          onClick={handleNextClick}
+          disabled={error}
+        >
+          Next page
+        </button>
+      )}
     </div>
   );
 }
@@ -28,5 +45,6 @@ export default function UsersPagination({
 UsersPagination.propTypes = {
   pagination: PropTypes.object.isRequired,
   searchOrganizationUsers: PropTypes.func.isRequired,
-  orgName: PropTypes.string.isRequired
+  orgName: PropTypes.string,
+  error: PropTypes.bool
 };
