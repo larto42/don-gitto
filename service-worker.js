@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/don-gitto/precache-manifest.83e43062244e3fdb71bbcaf35a7ad8c6.js"
+  "/don-gitto/precache-manifest.29467672bd6ba0920ae2c686983972ed.js"
 );
 
 self.addEventListener('message', (event) => {
